@@ -1,0 +1,66 @@
+REFINEMENT
+	ATOoETCS_GOA2SystemL1
+REFINES
+	ATOoETCS_GOA2SystemL0
+
+SEES
+	ATOoETCS_GOA2SystemL1_CONT,
+	ATOoETCS_GOA2SystemL0_CONT
+VARIABLES
+	onboardState,
+	trackState,
+	atooetcs_goa2State
+INVARIANT
+	onboardState : OnBoard --> OnBoardStates &
+	trackState : Track --> TrackStates
+INITIALISATION
+	onboardState :: {onboard} -->OnBoardStates ||
+	trackState :: {track} -->TrackStates ||
+	atooetcs_goa2State :: {atooetcs_goa2} -->ATOoETCS_GOA2SystemStates
+
+EVENTS
+	SetBoardForManual =
+	SELECT
+		onboardState(onboard)=BoardForAutomaticDriving
+	THEN
+		onboardState(onboard):=BoardForManualDriving
+	END
+ ;
+	SetAutomaticMode ref SetAutomatic=
+	SELECT
+		atooetcs_goa2State(atooetcs_goa2)=manualdriving
+	THEN
+		atooetcs_goa2State(atooetcs_goa2):=automaticDriving
+	END
+ ;
+	SetTrackForDriver =
+	SELECT
+		onboardState(onboard)=BoardForManualDriving &
+		trackState(track)=trackForAutomaticDriving
+	THEN
+		trackState(track):=trackForManualDriving
+	END
+ ;
+	SetTrackForAutomatic =
+	SELECT
+		onboardState(onboard)=BoardForAutomaticDriving &
+		trackState(track)=trackForManualDriving
+	THEN
+		trackState(track):=trackForAutomaticDriving
+	END
+ ;
+	SetBoardForAutomatic =
+	SELECT
+		onboardState(onboard)=BoardForManualDriving
+	THEN
+		onboardState(onboard):=BoardForAutomaticDriving
+	END
+ ;
+	SetManualMode ref SetDriver=
+	SELECT
+		atooetcs_goa2State(atooetcs_goa2)=automaticDriving
+	THEN
+		atooetcs_goa2State(atooetcs_goa2):=manualdriving
+	END
+END
+

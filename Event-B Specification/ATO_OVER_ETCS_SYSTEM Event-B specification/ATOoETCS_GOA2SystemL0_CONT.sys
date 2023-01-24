@@ -1,0 +1,17 @@
+SYSTEM
+	ATOoETCS_GOA2SystemL0_CONT
+SETS
+	ATOoETCS_GOA2System;
+	ATOoETCS_GOA2SystemStates
+CONSTANTS
+	atooetcs_goa2,
+	manualdriving,
+	automaticDriving
+PROPERTIES
+	atooetcs_goa2 : ATOoETCS_GOA2System &
+	ATOoETCS_GOA2System ={atooetcs_goa2} &
+	manualdriving : ATOoETCS_GOA2SystemStates &
+	automaticDriving : ATOoETCS_GOA2SystemStates &
+	manualdriving /= automaticDriving &
+	ATOoETCS_GOA2SystemStates ={automaticDriving, manualdriving}
+END

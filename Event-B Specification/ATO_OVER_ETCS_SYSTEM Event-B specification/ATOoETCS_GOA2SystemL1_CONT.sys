@@ -1,0 +1,28 @@
+SYSTEM
+	ATOoETCS_GOA2SystemL1_CONT
+SETS
+	OnBoard;
+	Track;
+	OnBoardStates;
+	TrackStates
+CONSTANTS
+	onboard,
+	track,
+	BoardForManualDriving,
+	trackForManualDriving,
+	BoardForAutomaticDriving,
+	trackForAutomaticDriving
+PROPERTIES
+	onboard : OnBoard &
+	track : Track &
+	OnBoard ={onboard} &
+	Track ={track} &
+	BoardForAutomaticDriving : OnBoardStates &
+	trackForManualDriving : TrackStates &
+	BoardForManualDriving : OnBoardStates &
+	trackForAutomaticDriving : TrackStates &
+	trackForAutomaticDriving /= trackForManualDriving &
+	BoardForManualDriving /= BoardForAutomaticDriving &
+	TrackStates ={trackForManualDriving, trackForAutomaticDriving} &
+	OnBoardStates ={BoardForAutomaticDriving, BoardForManualDriving}
+END

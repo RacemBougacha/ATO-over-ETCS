@@ -1,0 +1,118 @@
+REFINEMENT
+	OnBoardL0
+REFINES
+	OnBoard_Interface
+
+SEES
+	OnBoard_CONT,
+	ATOoETCS_GOA2SystemL1_CONT,
+	ATOoETCS_GOA2SystemL0_CONT
+VARIABLES
+	atoonboardState,
+	etcsState,
+	trainState,
+	onboardState
+INVARIANT
+	atoonboardState : ATOonBoard --> ATOonBoardStates &
+	etcsState : ETCS --> ETCSStates &
+	trainState : Train --> TrainStates
+INITIALISATION
+	atoonboardState :: {atoonboard} -->ATOonBoardStates ||
+	etcsState :: {etcs} -->ETCSStates ||
+	trainState :: {train} -->TrainStates ||
+	onboardState :: {onboard} -->OnBoardStates
+
+EVENTS
+	setOn =
+	SELECT
+		etcsState(etcs)=ETCSOFF
+	THEN
+		etcsState(etcs):=ETCSON
+	END
+ ;
+	SetStop =
+	SELECT
+		trainState(train)=trainStopped &
+		atoonboardState(atoonboard)=ATOEngaged
+	THEN
+		atoonboardState(atoonboard):=ATOonBoardON
+	END
+ ;
+	connect =
+	SELECT
+		etcsState(etcs)=ETCSInitialysed
+	THEN
+		etcsState(etcs):=connected
+	END
+ ;
+	SetEngaged ref SetBoardForAutomatic=
+	SELECT
+		atoonboardState(atoonboard)=ATOReady &
+		onboardState(onboard)=BoardForManualDriving
+	THEN
+		atoonboardState(atoonboard):=ATOEngaged ||
+		onboardState(onboard):=BoardForAutomaticDriving
+	END
+ ;
+	Shutdown =
+	SELECT
+		atoonboardState(atoonboard)=ATOonBoardON &
+		etcsState(etcs)=connected
+	THEN
+		etcsState(etcs):=ETCSOFF
+	END
+ ;
+	SetOFF =
+	SELECT
+		etcsState(etcs)=ETCSON
+	THEN
+		etcsState(etcs):=ETCSOFF
+	END
+ ;
+	SetReady =
+	SELECT
+		etcsState(etcs)=connected &
+		atoonboardState(atoonboard)=ATOonBoardON
+	THEN
+		atoonboardState(atoonboard):=ATOReady
+	END
+ ;
+	Stop =
+	SELECT
+		trainState(train)=holdingBrake
+	THEN
+		trainState(train):=trainStopped
+	END
+ ;
+	Init =
+	SELECT
+		atoonboardState(atoonboard)=ATOonBoardON &
+		etcsState(etcs)=ETCSON
+	THEN
+		etcsState(etcs):=ETCSInitialysed
+	END
+ ;
+	Brake =
+	SELECT
+		trainState(train)=PerformingTravel
+	THEN
+		trainState(train):=holdingBrake
+	END
+ ;
+	Start =
+	SELECT
+		atoonboardState(atoonboard)=ATOEngaged &
+		trainState(train)=trainStopped
+	THEN
+		trainState(train):=PerformingTravel
+	END
+ ;
+	PowerOn =
+	SELECT
+		etcsState(etcs)=ETCSON &
+		atoonboardState(atoonboard)=ATOonBoardOFF
+	THEN
+		atoonboardState(atoonboard):=ATOonBoardON
+	END
+END
+

@@ -1,0 +1,40 @@
+SYSTEM
+	OnBoard_Interface
+SEES
+	ATOoETCS_GOA2SystemL1_CONT,
+	ATOoETCS_GOA2SystemL0_CONT
+VARIABLES
+	onboardState
+INVARIANT
+	onboardState : OnBoard --> OnBoardStates
+INITIALISATION
+	onboardState :: {onboard} -->OnBoardStates
+
+EVENTS
+	SetBoardForManual =
+	SELECT
+		onboardState(onboard)=BoardForAutomaticDriving
+	THEN
+		onboardState(onboard):=BoardForManualDriving
+	END
+ ;
+	SetTrackForDriver =
+	SELECT
+		onboardState(onboard)=BoardForManualDriving
+	THEN
+ skip 	END
+ ;
+	SetTrackForAutomatic =
+	SELECT
+		onboardState(onboard)=BoardForAutomaticDriving
+	THEN
+ skip 	END
+ ;
+	SetBoardForAutomatic =
+	SELECT
+		onboardState(onboard)=BoardForManualDriving
+	THEN
+		onboardState(onboard):=BoardForAutomaticDriving
+	END
+END
+

@@ -1,0 +1,61 @@
+SYSTEM
+	OnBoard_CONT
+SETS
+	ETCS;
+	ATOonBoard;
+	Train;
+	ETCSStates;
+	ATOonBoardStates;
+	TrainStates
+CONSTANTS
+	train,
+	atoonboard,
+	etcs,
+	ETCSInitialysed,
+	ATOReady,
+	ETCSOFF,
+	holdingBrake,
+	ATOonBoardON,
+	ATOonBoardOFF,
+	trainStopped,
+	connected,
+	ATOEngaged,
+	ETCSON,
+	PerformingTravel
+PROPERTIES
+	etcs : ETCS &
+	train : Train &
+	atoonboard : ATOonBoard &
+	ETCS ={etcs} &
+	Train ={train} &
+	ATOonBoard ={atoonboard} &
+	PerformingTravel : TrainStates &
+	ETCSOFF : ETCSStates &
+	connected : ETCSStates &
+	holdingBrake : TrainStates &
+	ATOonBoardON : ATOonBoardStates &
+	ETCSON : ETCSStates &
+	trainStopped : TrainStates &
+	ATOReady : ATOonBoardStates &
+	ATOEngaged : ATOonBoardStates &
+	ATOonBoardOFF : ATOonBoardStates &
+	ETCSInitialysed : ETCSStates &
+	ATOEngaged /= ATOonBoardON &
+	ATOonBoardOFF /= ATOonBoardON &
+	ATOReady /= ATOonBoardON &
+	ATOonBoardOFF /= ATOEngaged &
+	ATOReady /= ATOEngaged &
+	trainStopped /= PerformingTravel &
+	holdingBrake /= PerformingTravel &
+	ETCSOFF /= ETCSON &
+	connected /= ETCSON &
+	ETCSInitialysed /= ETCSON &
+	ATOReady /= ATOonBoardOFF &
+	connected /= ETCSOFF &
+	ETCSInitialysed /= ETCSOFF &
+	holdingBrake /= trainStopped &
+	ETCSInitialysed /= connected &
+	ATOonBoardStates ={ATOonBoardON, ATOEngaged, ATOonBoardOFF, ATOReady} &
+	TrainStates ={PerformingTravel, trainStopped, holdingBrake} &
+	ETCSStates ={ETCSON, ETCSOFF, connected, ETCSInitialysed}
+END

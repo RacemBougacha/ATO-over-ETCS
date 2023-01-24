@@ -1,0 +1,28 @@
+SYSTEM
+	Track_CONT
+SETS
+	ATOTrack;
+	RBC;
+	RBCStates;
+	ATOTrackStates
+CONSTANTS
+	atotrack,
+	rbc,
+	RBCnotManaging,
+	ATOTrackOFF,
+	RBCmanaging,
+	ATOTrackON
+PROPERTIES
+	atotrack : ATOTrack &
+	rbc : RBC &
+	RBC ={rbc} &
+	ATOTrack ={atotrack} &
+	ATOTrackON : ATOTrackStates &
+	RBCmanaging : RBCStates &
+	ATOTrackOFF : ATOTrackStates &
+	RBCnotManaging : RBCStates &
+	RBCnotManaging /= RBCmanaging &
+	ATOTrackON /= ATOTrackOFF &
+	RBCStates ={RBCmanaging, RBCnotManaging} &
+	ATOTrackStates ={ATOTrackOFF, ATOTrackON}
+END

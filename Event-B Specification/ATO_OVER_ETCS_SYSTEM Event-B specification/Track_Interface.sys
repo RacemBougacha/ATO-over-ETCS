@@ -1,0 +1,28 @@
+SYSTEM
+	Track_Interface
+SEES
+	ATOoETCS_GOA2SystemL1_CONT,
+	ATOoETCS_GOA2SystemL0_CONT
+VARIABLES
+	trackState
+INVARIANT
+	trackState : Track --> TrackStates
+INITIALISATION
+	trackState :: {track} -->TrackStates
+
+EVENTS
+	SetTrackForDriver =
+	SELECT
+		trackState(track)=trackForAutomaticDriving
+	THEN
+		trackState(track):=trackForManualDriving
+	END
+ ;
+	SetTrackForAutomatic =
+	SELECT
+		trackState(track)=trackForManualDriving
+	THEN
+		trackState(track):=trackForAutomaticDriving
+	END
+END
+

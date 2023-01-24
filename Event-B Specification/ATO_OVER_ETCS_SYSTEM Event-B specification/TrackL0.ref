@@ -1,0 +1,64 @@
+REFINEMENT
+	TrackL0
+REFINES
+	Track_Interface
+
+SEES
+	Track_CONT,
+	OnBoard_CONT,
+	ATOoETCS_GOA2SystemL1_CONT,
+	ATOoETCS_GOA2SystemL0_CONT
+VARIABLES
+	atotrackState,
+	etcsState,
+	rbcState,
+	trackState
+INVARIANT
+	atotrackState : ATOTrack --> ATOTrackStates &
+	etcsState : ETCS --> ETCSStates &
+	rbcState : RBC --> RBCStates
+INITIALISATION
+	atotrackState :: {atotrack} -->ATOTrackStates ||
+	etcsState :: {etcs} -->ETCSStates ||
+	rbcState :: {rbc} -->RBCStates ||
+	trackState :: {track} -->TrackStates
+
+EVENTS
+	SetRBCrelease ref SetTrackForDriver=
+	SELECT
+		etcsState(etcs)=ETCSOFF &
+		trackState(track)=trackForAutomaticDriving
+	THEN
+		rbcState(rbc):=RBCnotManaging ||
+		trackState(track):=trackForManualDriving
+	END
+ ;
+	SetRBCManager ref SetTrackForAutomatic=
+	SELECT
+		etcsState(etcs)=connected &
+		rbcState(rbc)=RBCnotManaging &
+		trackState(track)=trackForManualDriving
+	THEN
+		rbcState(rbc):=RBCmanaging ||
+		trackState(track):=trackForAutomaticDriving
+	END
+ ;
+	SetATOTrackOFF =
+	SELECT
+		etcsState(etcs)=ETCSOFF &
+		rbcState(rbc)=RBCnotManaging &
+		atotrackState(atotrack)=ATOTrackON
+	THEN
+		atotrackState(atotrack):=ATOTrackOFF
+	END
+ ;
+	SetATOTrackON =
+	SELECT
+		etcsState(etcs)=connected &
+		rbcState(rbc)=RBCmanaging &
+		atotrackState(atotrack)=ATOTrackOFF
+	THEN
+		atotrackState(atotrack):=ATOTrackON
+	END
+END
+

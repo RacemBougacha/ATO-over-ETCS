@@ -1,0 +1,30 @@
+SYSTEM
+	ATOoETCS_GOA2SystemL1_Decomp_AbstractVar_Interface
+SEES
+	ATOoETCS_GOA2SystemL1_CONT,
+	ATOoETCS_GOA2SystemL0_CONT
+VARIABLES
+	atooetcs_goa2State
+INVARIANT
+	atooetcs_goa2State : ATOoETCS_GOA2System --> ATOoETCS_GOA2SystemStates
+INITIALISATION
+	atooetcs_goa2State :: {atooetcs_goa2} -->ATOoETCS_GOA2SystemStates
+
+EVENTS
+	
+	SetAutomaticMode =
+	SELECT
+		atooetcs_goa2State(atooetcs_goa2)=manualdriving
+	THEN
+		atooetcs_goa2State(atooetcs_goa2):=automaticDriving
+	END
+ ;
+
+	SetManualMode =
+	SELECT
+		atooetcs_goa2State(atooetcs_goa2)=automaticDriving
+	THEN
+		atooetcs_goa2State(atooetcs_goa2):=manualdriving
+	END
+END
+

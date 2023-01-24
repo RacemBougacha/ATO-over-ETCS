@@ -1,0 +1,27 @@
+SYSTEM
+	ATOoETCS_GOA2SystemL0
+SEES
+	ATOoETCS_GOA2SystemL0_CONT
+VARIABLES
+	atooetcs_goa2State
+INVARIANT
+	atooetcs_goa2State : ATOoETCS_GOA2System --> ATOoETCS_GOA2SystemStates
+INITIALISATION
+	atooetcs_goa2State :: {atooetcs_goa2} -->ATOoETCS_GOA2SystemStates
+
+EVENTS
+	SetDriver =
+	SELECT
+		atooetcs_goa2State(atooetcs_goa2)=automaticDriving
+	THEN
+		atooetcs_goa2State(atooetcs_goa2):=manualdriving
+	END
+ ;
+	SetAutomatic =
+	SELECT
+		atooetcs_goa2State(atooetcs_goa2)=manualdriving
+	THEN
+		atooetcs_goa2State(atooetcs_goa2):=automaticDriving
+	END
+END
+
